@@ -123,7 +123,7 @@ autoplot(zoo(rowSums(z2[,grep("Massachusetts", names(z2), value=FALSE)])))
 autoplot(zoo(rowSums(z22[,grep("Massachusetts", names(z22), value=FALSE)])))
 
 # Everything except New York
-z3 <- z2[,grep("New York, US", names(z2), invert=TRUE, value=FALSE)]
+# z3 <- z2[,grep("New York, US", names(z2), invert=TRUE, value=FALSE)]
 # autoplot(zoo(rowSums(z3)))
 
 # New York vs. Rest of U.S. on same plot
@@ -197,12 +197,20 @@ plotZCasesAndDeaths(z10, z30, "Georgia")
 plotZCasesAndDeaths(z15, z35, "Selected southern states")
 plotZCasesAndDeaths(z16, z36, "Selected southern states")
 
-getStateLogCasesAndDeaths <- function(zDeaths, zCases, state) {
+getStateLogCasesAndDeaths <- function(zDeaths, zCases, state, with_trends=FALSE) {
   zStateDeaths <- zoo(rowSums(z2[,grep(stringi::stri_c(state, ", US"), names(z2), invert=FALSE, value=FALSE)]))
   zStateCases <- zoo(rowSums(z22[,grep(stringi::stri_c(state, ", US"), names(z22), invert=FALSE, value=FALSE)]))
   zCombo <- merge(zStateDeaths, zStateCases)
-  names(zCombo) <- c(stringi::stri_c(state, " Deaths"), stringi::stri_c(state, "Cases"))
-#  plotZCasesAndDeaths(zStateDeaths, zStateCases, state)
+  namesToAdd <- c(stringi::stri_c(state, " Deaths"), stringi::stri_c(state, "Cases"))
+  if (with_trends) {
+    zTrend7Deaths <- diff(zStateDeaths, lag=7, arithmetic=FALSE)
+    zTrend7Cases <- diff(zStateCases, lag=7, arithmetic=FALSE)
+    zCombo <- merge(zCombo, zTrend7Deaths, zTrend7Cases)
+    namesToAdd <- append(namesToAdd, c(stringi::stri_c(state, " Deaths Trend"),
+                                       stringi::stri_c(state, "Cases Trend")))
+  }
+  names(zCombo) <- namesToAdd
+  #  plotZCasesAndDeaths(zStateDeaths, zStateCases, state)
   return(zCombo)
 }
 
