@@ -39,14 +39,19 @@ tib_deaths <- dfTots %>% pivot_longer(-Combined_Key, names_to = "day", values_to
 
 # Here it is in a function
 calc_7day <- function (dfTots) {
-  tib7day <- dfTots %>% pivot_longer(-Combined_Key, names_to = "day", values_to = "cumulative_deaths") %>%
+  tib7day <- dfTots %>% pivot_longer(-Combined_Key, names_to = "day",
+                                     values_to = "cumulative_deaths") %>%
     mutate(Date=as.Date(str_replace(day, "X", ""), format="%m.%d.%y")) %>%
     select(County=Combined_Key, Date, cumulative_deaths) %>%
     group_by(County) %>% nest() %>%
     mutate(zoo_obj=map(data, ~with(.x, zoo(cumulative_deaths, Date))),
            new_ones=map(data, ~with(.x, diff(zoo(cumulative_deaths, Date)))),
-           rolling_avg_7day=map(data, ~with(.x, rollmeanr(diff(zoo(cumulative_deaths, Date)), k=7)))
-    )
+           rolling_avg_7day=map(data, ~with(.x, rollmeanr(diff(zoo(cumulative_deaths, Date)),
+                                                          k=7))),
+           trend7=map(data, ~with(.x, diff(rollmeanr(diff(zoo(cumulative_deaths, Date)),
+                                                 k=7), lag=7, arithmetic=FALSE)
+                                                    ))
+           )
   return(tib7day)
   }
 
