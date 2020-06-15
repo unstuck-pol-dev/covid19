@@ -36,18 +36,26 @@
 # The darkness of the color is relative to to the peak value in absolute numbers. 
 # TODO: It should be relative to numbers divided by population
 
-source(file="jhuanalyze/StateVectors.R")
-source(file="jhuanalyze/ReadUSCovidData.R")
+library(here)
+source(here("code/covid19/jhuanalyze/ReadUSCovidData.R"))
+source(here("code/covid19/jhuanalyze/StateVectors.R"))
+source(here("code/covid19/density/WeightedPopDensity.R"))
 
 # https://stackoverflow.com/questions/24519794/r-max-function-ignore-na
 my.max <- function(x) ifelse( !all(is.na(x)), max(x, na.rm=T), NA)
 
-generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, nColumn, nLogScaleMax, nStart, nStop) {
+# This function takes a specific zoo with county-level cumulative cases or deaths,
+# 7-day moving average, and trend calculation
+generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, zCumItems, nColumn, nLogScaleMax, nStart, nStop) {
   numPrinted <- 0
   cat("{\"groups\":{")
   for (stateNum in nStart:nStop) {
-    zState <- getStateLogCasesAndDeaths(zDeaths, zCases, state_names[stateNum], with_trends = TRUE)
+    zState <- getStateCasesAndDeaths(zDeaths, zCases, state_names[stateNum], with_trends = TRUE)
     nMaxItems <- my.max(as.vector(zState[,nColumn]))
+    nStateCumItems <- my.max(getStateCumulative(zCumItems, state_names[stateNum])[,1])
+    dStateDensity <- dfWeightedDensityAntweiler[stateNum, 2]
+    dStatePopMill <- dfWeightedDensityAntweiler[stateNum, 3]
+    nSeverity <- 100*nStateCumItems/dStatePopMill/dStateDensity
     trendVec <- as.vector(zState[,nColumn + 2])
     curTrend <- NA
     iUse <- length(trendVec)
@@ -55,7 +63,7 @@ generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, nColum
       curTrend <- trendVec[iUse]
       iUse <- iUse - 1
     }
-    colorBlack <- 256 - max(1, min(c(trunc(log10(nMaxItems)/nLogScaleMax * 256), 255)) %% 256)
+    colorBlack <- 256 - max(1, min(c(trunc(log10(nSeverity)/nLogScaleMax * 256), 255)) %% 256)
     colorGreen <- colorBlack
     if(!is.na(curTrend)) {
       if (numPrinted > 0) {
@@ -89,12 +97,16 @@ generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, nColum
                       "}"))
 }
 
-generate_case_trend_map <- function() {
-  generate_trend_map(state_abbrs, state_names, zDeaths, zCases, 
-                     nColumn=2, nLogScaleMax=6, nStart=1, nStop=length(state_abbrs))
+generate_case_trend_map <- function(zDeaths, zCases, zCumCases) {
+  # Take a peek
+  # View(zCases)
+  generate_trend_map(state_abbrs, state_names, zDeaths, zCases, zCumCases, 
+                     nColumn=2, nLogScaleMax=8, nStart=1, nStop=length(state_abbrs))
 }
 
-generate_death_trend_map <- function() {
-  generate_trend_map(state_abbrs_without_lows, state_names_without_lows, zDeaths, zCases, nColumn=1, nLogScaleMax=4, nStart=1, nStop=length(state_abbrs_without_lows))
+generate_death_trend_map <- function(zDeaths, zCases, zCumDeaths) {
+  generate_trend_map(state_abbrs, state_names,
+                     zDeaths, zCases, zCumDeaths,
+                     nColumn=1, nLogScaleMax=4, nStart=1, nStop=length(state_abbrs))
 }
 
