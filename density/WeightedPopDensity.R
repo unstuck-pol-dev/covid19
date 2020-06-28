@@ -1,4 +1,5 @@
 # These numbers are off by an order of magnitude, so not recommended to use
+# Source: https://skyscraperpage.com/forum/showthread.php?t=211827
 dfWeightedDensity <- data.frame(state=c("New York"), density=c(28161.5), stringsAsFactors=FALSE)
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Hawaii", 8479.7),
       list("California", 8213.0))
