@@ -53,8 +53,8 @@ generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, zCumIt
     zState <- getStateCasesAndDeaths(zDeaths, zCases, state_names[stateNum], with_trends = TRUE)
     nMaxItems <- my.max(as.vector(zState[,nColumn]))
     nStateCumItems <- my.max(getStateCumulative(zCumItems, state_names[stateNum])[,1])
-    dStateDensity <- dfWeightedDensityAntweiler[stateNum, 2]
-    dStatePopMill <- dfWeightedDensityAntweiler[stateNum, 3]
+    dStateDensity <- dfWeightedDensityAntweiler[dfWeightedDensityAntweiler$state == state_names[stateNum], 2]
+    dStatePopMill <- dfWeightedDensityAntweiler[dfWeightedDensityAntweiler$state == state_names[stateNum], 3]
     nSeverity <- 100*nStateCumItems/dStatePopMill/dStateDensity
     trendVec <- as.vector(zState[,nColumn + 2])
     curTrend <- NA
@@ -70,7 +70,8 @@ generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, zCumIt
         cat(",")
       }
       if (curTrend > 1) {
-        colorRed <- min(c(trunc((curTrend - 1) * 256), 255)) %% 256
+        # Too many states are pegging the red meter, so upping to 5x
+        colorRed <- min(c(trunc((curTrend)/5 * 256), 255)) %% 256
         colorBlue <- colorBlack
         colorRed <- min(255, colorRed + colorBlack)
       } else {
