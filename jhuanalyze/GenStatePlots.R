@@ -12,7 +12,7 @@ autoplotToFile <- function(fileName, plotObj) {
 
 generate_state_plots <- function(state_abbrs, state_names, zDeaths, zCases, year, month, day) {
   numPrinted <- 0
-  for (stateNum in 1:50) {
+  for (stateNum in 1:length(state_abbrs)) {
     zState <- getStateCasesAndDeaths(zDeaths, zCases, state_names[stateNum], with_trends = FALSE)
     dirName <- stringi::stri_c("pages/plots/", year, "/", formatC(month, width=2, flag="0"), 
                                "/", formatC(day, width=2, flag="0"), "/States/",
