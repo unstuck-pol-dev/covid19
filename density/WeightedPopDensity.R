@@ -1,11 +1,15 @@
-# These numbers are off by an order of magnitude, so not recommended to use
-# Source: https://skyscraperpage.com/forum/showthread.php?t=211827
+# These numbers are based on the U.S. Cnesus Bureau's formula
+# https://www.census.gov/prod/cen2010/reports/c2010sr-01.pdf
+# Sources: https://skyscraperpage.com/forum/showthread.php?t=211827
+#          https://ggwash.org/view/68144/this-is-a-better-way-to-look-at-how-built-up-our-region-is
+
 dfWeightedDensity <- data.frame(state=c("New York"), density=c(28161.5), stringsAsFactors=FALSE)
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Hawaii", 8479.7),
       list("California", 8213.0))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("New Jersey", 7940.6))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Illinois", 6660.8))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Massachusetts", 6585.6))
+dfWeightedDensity <- rbind(dfWeightedDensity,list("District of Columbia", 6388))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Nevada", 5419.5))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Rhode Island", 5034.0))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Pennsylvania", 4886.8))
@@ -82,6 +86,9 @@ dfWeightedDensityEurope <- rbind(dfWeightedDensity,list("Finland", 53))
 # Another data set from https://wernerantweiler.ca/blog.php?item=2020-04-12
 # Thanks to DanSpartan on Unstuck Politics for the pointer
 # This one should be better, and uses similar calculations to the European set
+# On second thought, there is no unit for this calculation, and MA and NV are separated by
+# a factor of 8, while with the Census method, they are close.
+
 dfWeightedDensityAntweiler <- data.frame(state=c("Alabama"), density=c(64.194), population=c(4.903), stringsAsFactors=FALSE)
 dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("Alaska", 5.625, 0.732))
 dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("Arizona", 76.011, 7.279))
@@ -132,3 +139,6 @@ dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("Washington
 dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("West Virginia", 44.760, 1.792))
 dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("Wisconsin", 112.485, 5.822))
 dfWeightedDensityAntweiler <- rbind(dfWeightedDensityAntweiler, list("Wyoming", 3.270, 0.579))
+
+# Population numbers from Antweiler, D.C. population from Wikipedia - 2018 Census estimate
+dfStatePop <- read.csv(here("code/covid19/density/USStatePopulation.csv"))

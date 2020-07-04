@@ -53,8 +53,8 @@ generate_trend_map <- function(state_abbrs, state_names, zDeaths, zCases, zCumIt
     zState <- getStateCasesAndDeaths(zDeaths, zCases, state_names[stateNum], with_trends = TRUE)
     nMaxItems <- my.max(as.vector(zState[,nColumn]))
     nStateCumItems <- my.max(getStateCumulative(zCumItems, state_names[stateNum])[,1])
-    dStateDensity <- dfWeightedDensityAntweiler[stateNum, 2]
-    dStatePopMill <- dfWeightedDensityAntweiler[stateNum, 3]
+    dStateDensity <- subset(dfWeightedDensity, state == state_names[stateNum])[,2]
+    dStatePopMill <- dfStatePop[stateNum, "population"]
     nSeverity <- 100*nStateCumItems/dStatePopMill/dStateDensity
     trendVec <- as.vector(zState[,nColumn + 2])
     curTrend <- NA
@@ -101,12 +101,12 @@ generate_case_trend_map <- function(zDeaths, zCases, zCumCases) {
   # Take a peek
   # View(zCases)
   generate_trend_map(state_abbrs, state_names, zDeaths, zCases, zCumCases, 
-                     nColumn=2, nLogScaleMax=8, nStart=1, nStop=length(state_abbrs))
+                     nColumn=2, nLogScaleMax=4, nStart=1, nStop=length(state_abbrs))
 }
 
 generate_death_trend_map <- function(zDeaths, zCases, zCumDeaths) {
   generate_trend_map(state_abbrs, state_names,
                      zDeaths, zCases, zCumDeaths,
-                     nColumn=1, nLogScaleMax=4, nStart=1, nStop=length(state_abbrs))
+                     nColumn=1, nLogScaleMax=2, nStart=1, nStop=length(state_abbrs))
 }
 
