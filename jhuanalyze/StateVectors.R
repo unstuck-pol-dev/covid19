@@ -106,6 +106,12 @@ state_names = c(
 "Wisconsin",
 "Wyoming")
 
+state_lookup_abbr <- state_abbrs
+names(state_lookup_abbr) <- state_names
+getStateAbbr <- function(state) {
+  return(unname(state_lookup_abbr[state]))
+}
+
 state_abbrs_without_lows = c(
   "AL",
   "AK",
