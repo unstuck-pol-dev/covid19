@@ -28,6 +28,6 @@ piv_sdi <- function(sh1) {
 }
 
 # sh2 should be read from the same spreadsheet, but using the sheet
-read_target_sdi <- function(shTarget) {
-  return(shTarget %>% mutate(State=getStateAbbr(.$`State or Place`)))
+add_state_abbr <- function(shTarget, stateCol) {
+  return(shTarget %>% mutate(State=getStateAbbr(shTarget[stateCol])))
 }

@@ -55,8 +55,39 @@ dfWeightedDensity <- rbind(dfWeightedDensity,list("Arkansas", 807.9))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("West Virginia", 792.1))
 dfWeightedDensity <- rbind(dfWeightedDensity,list("Mississippi", 694.9))
 
-#Europe
-# These numbers seem more reasonable
+# Europe numbers from 
+# https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/LUISA/SecondaryOutput_Indicators/Europe/REF-2016/UDP/PWD/
+# people per km^2
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Austria", 4058))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Belgium", 2852))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Bulgaria", 3580))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Cyprus", 2146))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Czech", Republic 2090))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Germany", 2466))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Denmark", 2401))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Estonia", 2355))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Greece", 8410))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Spain", 11522))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Finland", 1691))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("France", 4512))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Croatia", 1363))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Hungary", 2532))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Ireland", 2370))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Italy", 3611))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Lithuania", 1807))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Luxembourg", 1886))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Latvia", 2507))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Malta", 4159))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Netherlands", 4071))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Poland", 2513))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Portugal", 3526))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Romania", 4044))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Sweden", 2587))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Slovenia", 1986))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("Slovakia", 2327))
+dfWeightedDensityEuro <- rbind(dfWeightedDensityEuro, list("United", Kingdom 3587))
+
+#Europe numbers similar to Antweiler's (see below)
 dfWeightedDensityEurope <- data.frame(country=c("Spain"), density=c(737), stringsAsFactors=FALSE)
 dfWeightedDensityEurope <- rbind(dfWeightedDensity,list("Netherlands", 546),
                            list("California", 8213.0))
